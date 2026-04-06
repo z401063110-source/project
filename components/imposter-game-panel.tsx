@@ -2,7 +2,7 @@
 
 import type { RealtimeChannel, User as SupabaseUser } from '@supabase/supabase-js';
 import { ArrowRight, Gamepad2, Plus } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { OfflinePassPlayPanel } from '@/components/offline-pass-play-panel';
 import wordLibrary from '@/data/wordLibrary.json';
 import { supabase } from '@/lib/supabase';
@@ -577,8 +577,6 @@ function activateRoom(roomData: RoomData): RoomData | null {
     };
   });
 
-  console.log('Supabase room assignments:', nextPlayers);
-
   return {
     ...roomData,
     status: 'discussion',
@@ -714,6 +712,7 @@ export function ImposterGamePanel({
   const isVotingTimerExpired = roomData?.status === 'voting' && votingTimeRemainingMs === 0;
   const isEntryScreen = screen === 'entry';
   const isEmbeddedEntry = isEntryScreen && entryLayout === 'embedded';
+  const isIdentityVisible = Boolean(localPlayerState?.isAlive && isPeeking);
   const getDisplayedPlayerName = (player: RoomPlayer) => {
     const playerIndex = roomData?.players.findIndex((entry) => entry.id === player.id) ?? -1;
     const baseName = playerIndex >= 0 ? getPlayerLabel(playerIndex) : 'Player';
@@ -727,6 +726,20 @@ export function ImposterGamePanel({
     }
 
     return baseName;
+  };
+
+  const handlePeekPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    setIsPeeking(true);
+  };
+
+  const handlePeekPointerEnd = (event?: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event && event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    setIsPeeking(false);
   };
 
   const commitRoomData = (nextRoomData: RoomData | null) => {
@@ -752,6 +765,12 @@ export function ImposterGamePanel({
   useEffect(() => {
     onScreenChange?.(screen);
   }, [onScreenChange, screen]);
+
+  useEffect(() => {
+    if (screen !== 'identity' || !localPlayerState?.isAlive) {
+      setIsPeeking(false);
+    }
+  }, [localPlayerState?.id, localPlayerState?.isAlive, localPlayerState?.word, screen]);
 
   useEffect(() => {
     if (
@@ -2063,8 +2082,17 @@ export function ImposterGamePanel({
                 Waiting Room
               </p>
               <p className="mt-3 text-sm text-slate-400">Share this code across the table</p>
-              <div className="mt-4 text-[clamp(4.25rem,25vw,6.5rem)] font-black tracking-[0.34em] text-white tabular-nums">
-                {roomData.roomCode}
+              <div className="mx-auto mt-4 grid max-w-[min(100%,22rem)] grid-cols-4 gap-2 sm:gap-3">
+                {Array.from({ length: 4 }, (_, index) => (
+                  <div
+                    key={`${roomData.roomCode}-${index}`}
+                    className="flex min-w-0 items-center justify-center rounded-[22px] border border-white/10 bg-slate-950/80 px-2 py-4 shadow-[0_18px_50px_rgba(2,6,23,0.2)]"
+                  >
+                    <span className="block text-[clamp(2.5rem,11vw,4.5rem)] font-black leading-none tracking-[0.04em] text-white tabular-nums">
+                      {roomData.roomCode[index] ?? '0'}
+                    </span>
+                  </div>
+                ))}
               </div>
               <div className="mt-4 inline-flex rounded-full border border-white/10 bg-slate-900 px-4 py-2 text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
                 Round {currentRoundNumber}
@@ -2286,34 +2314,54 @@ export function ImposterGamePanel({
               {localPlayerState.isAlive ? (
                 <button
                   type="button"
-                  className="mt-5 flex min-h-[360px] w-full flex-col items-center justify-center rounded-[28px] border border-white/10 bg-slate-950/80 p-6 text-center"
-                  onPointerDown={() => setIsPeeking(true)}
-                  onPointerUp={() => setIsPeeking(false)}
-                  onPointerLeave={() => setIsPeeking(false)}
-                  onPointerCancel={() => setIsPeeking(false)}
+                  aria-pressed={isIdentityVisible}
+                  aria-label={
+                    isIdentityVisible
+                      ? 'Release to hide your private role and word'
+                      : 'Press and hold to reveal your private role and word'
+                  }
+                  className="mt-5 flex min-h-[360px] w-full touch-none flex-col items-center justify-center rounded-[28px] border border-white/10 bg-slate-950/80 p-6 text-center"
+                  onPointerDown={handlePeekPointerDown}
+                  onPointerUp={handlePeekPointerEnd}
+                  onPointerLeave={handlePeekPointerEnd}
+                  onPointerCancel={handlePeekPointerEnd}
+                  onLostPointerCapture={() => handlePeekPointerEnd()}
+                  onBlur={() => handlePeekPointerEnd()}
                   onContextMenu={(event) => event.preventDefault()}
                 >
-                  <div className={isPeeking ? '' : 'select-none blur-xl'}>
+                  <div className="max-w-md">
                     <div
                       className={[
                         'inline-flex rounded-full px-4 py-2 text-sm font-bold uppercase tracking-[0.18em]',
-                        localPlayerState.role === 'Imposter'
+                        isIdentityVisible && localPlayerState.role === 'Imposter'
                           ? 'bg-rose-500/15 text-rose-300'
-                          : 'bg-cyan-500/15 text-cyan-300',
+                          : isIdentityVisible
+                            ? 'bg-cyan-500/15 text-cyan-300'
+                            : 'bg-white/5 text-slate-300',
                       ].join(' ')}
                     >
-                      {localPlayerState.role ?? 'Hidden'}
+                      {isIdentityVisible ? localPlayerState.role ?? 'Confidential' : 'Identity Hidden'}
                     </div>
                     <p className="mt-8 text-sm uppercase tracking-[0.18em] text-slate-400">
-                      Assigned Word
+                      {isIdentityVisible ? 'Assigned Word' : 'Secret Word'}
                     </p>
-                    <p className="mt-4 text-5xl font-black leading-tight text-white">
-                      {localPlayerState.word ?? 'Confidential'}
+                    <p
+                      className={[
+                        'mt-4 text-5xl font-black leading-tight',
+                        isIdentityVisible ? 'text-white' : 'text-slate-500',
+                      ].join(' ')}
+                    >
+                      {isIdentityVisible ? localPlayerState.word ?? 'Confidential' : 'Press and Hold'}
+                    </p>
+                    <p className="mt-5 text-sm leading-6 text-slate-400">
+                      {isIdentityVisible
+                        ? 'Release immediately to hide your role before you pass the device.'
+                        : 'Your role and word stay hidden until you keep pressing this card.'}
                     </p>
                   </div>
 
                   <div className="mt-8 rounded-full border border-white/10 bg-slate-900 px-5 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
-                    {isPeeking ? 'Release to Hide' : 'Hold to Peek'}
+                    {isIdentityVisible ? 'Release to Hide' : 'Hold to Peek'}
                   </div>
                 </button>
               ) : (

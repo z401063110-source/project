@@ -1,7 +1,7 @@
 'use client';
 
 import type { User as SupabaseUser } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import wordLibrary from '@/data/wordLibrary.json';
 
 type TopicPack = 'Animals' | 'Food' | 'School' | 'Office' | 'Movies' | 'Travel';
@@ -172,12 +172,33 @@ export function OfflinePassPlayPanel({
   const currentPlayer = round?.players[currentPlayerIndex] ?? null;
   const eliminatedPlayer =
     selectedVoteIndex !== null && round ? round.players[selectedVoteIndex] : null;
+  const isRevealVisible = phase === 'reveal' && isPeeking;
 
   useEffect(() => {
     if (!hasUnlockedPremiumPacks && isPremiumTopicPack(topicPack)) {
       setTopicPack('Animals');
     }
   }, [hasUnlockedPremiumPacks, topicPack]);
+
+  useEffect(() => {
+    if (phase !== 'reveal') {
+      setIsPeeking(false);
+    }
+  }, [currentPlayerIndex, phase]);
+
+  const handlePeekPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    setIsPeeking(true);
+  };
+
+  const handlePeekPointerEnd = (event?: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event && event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    setIsPeeking(false);
+  };
 
   const handleTopicPackSelect = (nextTopicPack: TopicPack) => {
     if (!hasUnlockedPremiumPacks && isPremiumTopicPack(nextTopicPack)) {
@@ -435,34 +456,54 @@ export function OfflinePassPlayPanel({
 
           <button
             type="button"
-            className="flex min-h-[380px] w-full flex-col items-center justify-center rounded-[28px] border border-white/10 bg-slate-950/80 p-6 text-center"
-            onPointerDown={() => setIsPeeking(true)}
-            onPointerUp={() => setIsPeeking(false)}
-            onPointerLeave={() => setIsPeeking(false)}
-            onPointerCancel={() => setIsPeeking(false)}
+            aria-pressed={isRevealVisible}
+            aria-label={
+              isRevealVisible
+                ? 'Release to hide your private role and word'
+                : 'Press and hold to reveal your private role and word'
+            }
+            className="flex min-h-[380px] w-full touch-none flex-col items-center justify-center rounded-[28px] border border-white/10 bg-slate-950/80 p-6 text-center"
+            onPointerDown={handlePeekPointerDown}
+            onPointerUp={handlePeekPointerEnd}
+            onPointerLeave={handlePeekPointerEnd}
+            onPointerCancel={handlePeekPointerEnd}
+            onLostPointerCapture={() => handlePeekPointerEnd()}
+            onBlur={() => handlePeekPointerEnd()}
             onContextMenu={(event) => event.preventDefault()}
           >
-            <div className={isPeeking ? '' : 'select-none blur-xl'}>
+            <div className="max-w-md">
               <div
                 className={[
                   'inline-flex rounded-full px-4 py-2 text-sm font-bold uppercase tracking-[0.18em]',
-                  currentPlayer.role === 'Imposter'
+                  isRevealVisible && currentPlayer.role === 'Imposter'
                     ? 'bg-rose-500/15 text-rose-300'
-                    : 'bg-cyan-500/15 text-cyan-300',
+                    : isRevealVisible
+                      ? 'bg-cyan-500/15 text-cyan-300'
+                      : 'bg-white/5 text-slate-300',
                 ].join(' ')}
               >
-                {currentPlayer.role}
+                {isRevealVisible ? currentPlayer.role : 'Identity Hidden'}
               </div>
               <p className="mt-8 text-sm uppercase tracking-[0.18em] text-slate-400">
-                Assigned Word
+                {isRevealVisible ? 'Assigned Word' : 'Secret Word'}
               </p>
-              <p className="mt-4 text-5xl font-black leading-tight text-white">
-                {currentPlayer.word}
+              <p
+                className={[
+                  'mt-4 text-5xl font-black leading-tight',
+                  isRevealVisible ? 'text-white' : 'text-slate-500',
+                ].join(' ')}
+              >
+                {isRevealVisible ? currentPlayer.word : 'Press and Hold'}
+              </p>
+              <p className="mt-5 text-sm leading-6 text-slate-400">
+                {isRevealVisible
+                  ? 'Release immediately to hide your role before you hand the phone over.'
+                  : 'Your role and word stay hidden until you keep pressing this card.'}
               </p>
             </div>
 
             <div className="mt-8 rounded-full border border-white/10 bg-slate-900 px-5 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-300">
-              {isPeeking ? 'Release to Hide' : 'Hold to Peek'}
+              {isRevealVisible ? 'Release to Hide' : 'Hold to Peek'}
             </div>
           </button>
 

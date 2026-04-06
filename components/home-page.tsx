@@ -10,46 +10,134 @@ import {
 import { SeoContent } from '@/components/seo-content';
 import { supabase } from '@/lib/supabase';
 
+function normalizeUrl(url: string) {
+  if (!url) {
+    return '';
+  }
+
+  const trimmedUrl = url.trim();
+  const prefixedUrl = trimmedUrl.startsWith('http') ? trimmedUrl : `https://${trimmedUrl}`;
+
+  return prefixedUrl.endsWith('/') ? prefixedUrl : `${prefixedUrl}/`;
+}
+
+function getGoogleRedirectUrl() {
+  const configuredUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL;
+
+  if (configuredUrl) {
+    return normalizeUrl(configuredUrl);
+  }
+
+  if (typeof window === 'undefined') {
+    return '';
+  }
+
+  return normalizeUrl(window.location.origin);
+}
+
+function readAuthErrorMessageFromUrl() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  const hashParams = new URLSearchParams(
+    currentUrl.hash.startsWith('#') ? currentUrl.hash.slice(1) : currentUrl.hash,
+  );
+  const rawErrorMessage =
+    hashParams.get('error_description') ??
+    currentUrl.searchParams.get('error_description') ??
+    hashParams.get('error') ??
+    currentUrl.searchParams.get('error');
+
+  if (!rawErrorMessage) {
+    return null;
+  }
+
+  currentUrl.hash = '';
+  currentUrl.searchParams.delete('error');
+  currentUrl.searchParams.delete('error_code');
+  currentUrl.searchParams.delete('error_description');
+  window.history.replaceState({}, document.title, `${currentUrl.pathname}${currentUrl.search}`);
+
+  return rawErrorMessage.replace(/\+/g, ' ').trim();
+}
+
 export function HomePageClient() {
   const [currentScreen, setCurrentScreen] = useState<ImposterPanelScreen>('entry');
+  const [hasMounted, setHasMounted] = useState(false);
+  const [isAuthReady, setIsAuthReady] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState<string | null>(null);
   const isHeroView = currentScreen === 'entry';
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
 
     const syncSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
-      if (!isMounted) {
-        return;
+        if (!isMounted) {
+          return;
+        }
+
+        setUser(session?.user ?? null);
+        setIsLoggingIn(false);
+        setIsLoginModalOpen(false);
+
+        if (session) {
+          setAuthErrorMessage(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsAuthReady(true);
+        }
       }
-
-      setUser(session?.user ?? null);
-      setIsLoggingIn(false);
-      setIsLoginModalOpen(false);
     };
 
     void syncSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       setIsLoggingIn(false);
       setIsLoginModalOpen(false);
       setIsAccountMenuOpen(false);
+      setIsAuthReady(true);
+
+      if (session || event === 'SIGNED_OUT') {
+        setAuthErrorMessage(null);
+      }
     });
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    const nextAuthErrorMessage = readAuthErrorMessageFromUrl();
+
+    if (!nextAuthErrorMessage) {
+      return;
+    }
+
+    setAuthErrorMessage(nextAuthErrorMessage);
+    setIsLoginModalOpen(true);
+    setIsLoggingIn(false);
   }, []);
 
   const openLoginModal = () => {
@@ -59,16 +147,18 @@ export function HomePageClient() {
   const closeLoginModal = () => {
     setIsLoginModalOpen(false);
     setIsLoggingIn(false);
+    setAuthErrorMessage(null);
   };
 
   const handleGoogleLogin = async () => {
     try {
       setIsLoggingIn(true);
+      setAuthErrorMessage(null);
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: getGoogleRedirectUrl(),
         },
       });
 
@@ -78,6 +168,9 @@ export function HomePageClient() {
     } catch (error) {
       console.error('Google sign-in failed:', error);
       setIsLoggingIn(false);
+      setAuthErrorMessage(
+        error instanceof Error ? error.message : 'Google sign-in could not be started.',
+      );
     }
   };
 
@@ -97,65 +190,90 @@ export function HomePageClient() {
   };
 
   const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+  const shouldRenderResolvedAccountControl = hasMounted && isAuthReady;
+
+  const renderAccountControl = () => {
+    if (!shouldRenderResolvedAccountControl) {
+      return (
+        <div
+          aria-hidden="true"
+          className="flex h-11 min-w-[7.5rem] items-center justify-center rounded-full border border-white/10 bg-[#0B101B]/50 px-4 py-2 text-sm text-slate-500 backdrop-blur-md"
+        >
+          <span className="inline-flex h-5 w-5 rounded-full border border-white/10 bg-white/5" />
+          <span className="ml-2">Account</span>
+        </div>
+      );
+    }
+
+    if (user) {
+      return (
+        <div className="relative">
+          <button
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded={isAccountMenuOpen}
+            aria-label="Open account menu"
+            className="block"
+            onClick={() => setIsAccountMenuOpen((isOpen) => !isOpen)}
+          >
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt=""
+                aria-hidden="true"
+                className="h-9 w-9 cursor-pointer rounded-full border border-white/20 shadow-sm transition-colors hover:border-[#00D17F]"
+              />
+            ) : (
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-[#0B101B]/90 text-slate-200 shadow-sm transition-colors hover:border-[#00D17F]">
+                <UserIcon size={16} strokeWidth={2.2} />
+              </span>
+            )}
+          </button>
+
+          {isAccountMenuOpen && (
+            <div className="absolute right-0 mt-2 w-32 rounded-xl border border-white/10 bg-[#0B101B]/90 py-1 shadow-xl backdrop-blur-md">
+              <button
+                type="button"
+                className="w-full px-4 py-2 text-left text-sm text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={isLoginModalOpen}
+        className="flex cursor-pointer items-center gap-2 rounded-full border border-white/10 bg-[#0B101B]/50 px-4 py-2 text-sm text-slate-300 backdrop-blur-md transition-all hover:bg-[#0B101B]/80 hover:text-white"
+        onClick={openLoginModal}
+      >
+        <UserIcon size={16} strokeWidth={2} />
+        <span>Sign In</span>
+      </button>
+    );
+  };
 
   return (
     <main className="relative min-h-[100svh] bg-slate-950">
-      <div className="fixed right-6 top-6 z-40 md:right-8 md:top-8">
-        {user ? (
-          <div className="relative">
-            <button
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={isAccountMenuOpen}
-              aria-label="Open account menu"
-              className="block"
-              onClick={() => setIsAccountMenuOpen((isOpen) => !isOpen)}
-            >
-              {avatarUrl ? (
-                <img
-                  src={avatarUrl}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-9 w-9 cursor-pointer rounded-full border border-white/20 shadow-sm transition-colors hover:border-[#00D17F]"
-                />
-              ) : (
-                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-[#0B101B]/90 text-slate-200 shadow-sm transition-colors hover:border-[#00D17F]">
-                  <UserIcon size={16} strokeWidth={2.2} />
-                </span>
-              )}
-            </button>
+      <div className="px-4 pt-4 sm:px-6 lg:hidden">
+        <div className="flex justify-end">{renderAccountControl()}</div>
+      </div>
 
-            {isAccountMenuOpen && (
-              <div className="absolute right-0 mt-2 w-32 rounded-xl border border-white/10 bg-[#0B101B]/90 py-1 shadow-xl backdrop-blur-md">
-                <button
-                  type="button"
-                  className="w-full px-4 py-2 text-left text-sm text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded={isLoginModalOpen}
-            className="flex cursor-pointer items-center gap-2 rounded-full border border-white/10 bg-[#0B101B]/50 px-4 py-2 text-sm text-slate-300 backdrop-blur-md transition-all hover:bg-[#0B101B]/80 hover:text-white"
-            onClick={openLoginModal}
-          >
-            <UserIcon size={16} strokeWidth={2} />
-            <span>Sign In</span>
-          </button>
-        )}
+      <div className="fixed right-6 top-6 z-40 hidden lg:block md:right-8 md:top-8">
+        {renderAccountControl()}
       </div>
 
       <section className={isHeroView ? 'w-full' : ''}>
         <div
           className={
             isHeroView
-              ? 'flex min-h-screen flex-col items-center justify-center px-4 py-8 text-center'
+              ? 'flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center px-4 pb-8 text-center sm:px-6 lg:min-h-screen lg:px-4 lg:py-8'
               : ''
           }
         >
@@ -222,6 +340,12 @@ export function HomePageClient() {
               Sign in with your Google account to access premium topic packs and host
               larger parties. It&apos;s completely free.
             </p>
+
+            {authErrorMessage && (
+              <div className="mb-6 w-full rounded-2xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm leading-6 text-rose-200">
+                {authErrorMessage}
+              </div>
+            )}
 
             <button
               type="button"
