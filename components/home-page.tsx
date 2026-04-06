@@ -8,14 +8,15 @@ import {
   type ImposterPanelScreen,
 } from '@/components/imposter-game-panel';
 import { SeoContent } from '@/components/seo-content';
+import { clearAuthReturnState, getCurrentPath } from '@/lib/auth-return-state';
 import { supabase } from '@/lib/supabase';
 
-function getGoogleRedirectUrl() {
+function getGoogleRedirectUrl(currentPath: string) {
   if (typeof window === 'undefined') {
     return '';
   }
 
-  return `${window.location.origin}/auth/callback`;
+  return `${window.location.origin}/auth/callback?next=${encodeURIComponent(currentPath)}`;
 }
 
 function readAuthErrorMessageFromUrl() {
@@ -130,17 +131,19 @@ export function HomePageClient() {
     setIsLoginModalOpen(false);
     setIsLoggingIn(false);
     setAuthErrorMessage(null);
+    clearAuthReturnState();
   };
 
   const handleGoogleLogin = async () => {
     try {
       setIsLoggingIn(true);
       setAuthErrorMessage(null);
+      const currentPath = getCurrentPath();
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: getGoogleRedirectUrl(),
+          redirectTo: getGoogleRedirectUrl(currentPath),
         },
       });
 

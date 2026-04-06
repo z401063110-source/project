@@ -3,6 +3,11 @@
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useEffect, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import wordLibrary from '@/data/wordLibrary.json';
+import {
+  clearAuthReturnState,
+  readAuthReturnState,
+  saveAuthReturnState,
+} from '@/lib/auth-return-state';
 
 type TopicPack = 'Animals' | 'Food' | 'School' | 'Office' | 'Movies' | 'Travel';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
@@ -64,6 +69,14 @@ function clampImposterCount(imposterCount: number, playerCount: number) {
 
 function isPremiumTopicPack(topicPack: TopicPack) {
   return premiumTopicPacks.includes(topicPack);
+}
+
+function isTopicPack(value: unknown): value is TopicPack {
+  return topicPacks.includes(value as TopicPack);
+}
+
+function isDifficulty(value: unknown): value is Difficulty {
+  return difficulties.includes(value as Difficulty);
 }
 
 function optionButtonStyles(isActive: boolean) {
@@ -181,6 +194,39 @@ export function OfflinePassPlayPanel({
   }, [hasUnlockedPremiumPacks, topicPack]);
 
   useEffect(() => {
+    if (!hasUnlockedPremiumPacks) {
+      return;
+    }
+
+    const authReturnState = readAuthReturnState();
+
+    if (!authReturnState || authReturnState.kind !== 'offline') {
+      return;
+    }
+
+    const nextTopicPack = isTopicPack(authReturnState.topicPack)
+      ? authReturnState.topicPack
+      : 'Animals';
+    const nextDifficulty = isDifficulty(authReturnState.difficulty)
+      ? authReturnState.difficulty
+      : 'Medium';
+    const nextPlayerCount = Math.max(3, Math.min(12, Math.floor(authReturnState.playerCount)));
+    const nextImposterCount = clampImposterCount(authReturnState.imposterCount, nextPlayerCount);
+
+    setPhase('setup');
+    setTopicPack(nextTopicPack);
+    setDifficulty(nextDifficulty);
+    setPlayerCount(nextPlayerCount);
+    setImposterCount(nextImposterCount);
+    setRound(null);
+    setCurrentPlayerIndex(0);
+    setSelectedVoteIndex(null);
+    setIsPeeking(false);
+    setLocalError(null);
+    clearAuthReturnState();
+  }, [hasUnlockedPremiumPacks]);
+
+  useEffect(() => {
     if (phase !== 'reveal') {
       setIsPeeking(false);
     }
@@ -203,6 +249,13 @@ export function OfflinePassPlayPanel({
   const handleTopicPackSelect = (nextTopicPack: TopicPack) => {
     if (!hasUnlockedPremiumPacks && isPremiumTopicPack(nextTopicPack)) {
       if (onRequestSignIn) {
+        saveAuthReturnState({
+          kind: 'offline',
+          topicPack: nextTopicPack,
+          difficulty,
+          playerCount,
+          imposterCount,
+        });
         onRequestSignIn();
       } else {
         setLocalError('Sign in with Google to unlock extra topic packs.');

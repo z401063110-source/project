@@ -5,6 +5,11 @@ import { ArrowRight, Gamepad2, Plus } from 'lucide-react';
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { OfflinePassPlayPanel } from '@/components/offline-pass-play-panel';
 import wordLibrary from '@/data/wordLibrary.json';
+import {
+  clearAuthReturnState,
+  readAuthReturnState,
+  saveAuthReturnState,
+} from '@/lib/auth-return-state';
 import { supabase } from '@/lib/supabase';
 
 export type ImposterPanelScreen =
@@ -244,6 +249,24 @@ function isPremiumTopicPack(topicPack: TopicPack) {
 
 function isDifficulty(value: unknown): value is Difficulty {
   return difficulties.includes(value as Difficulty);
+}
+
+function isDeviceRole(value: unknown): value is DeviceRole {
+  return value === 'host' || value === 'guest';
+}
+
+function isLocalPlayer(value: unknown): value is LocalPlayer {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const player = value as Record<string, unknown>;
+
+  return (
+    typeof player.id === 'string' &&
+    typeof player.name === 'string' &&
+    typeof player.isHost === 'boolean'
+  );
 }
 
 function parseWordPair(rawValue: unknown): WordPair | null {
@@ -552,6 +575,25 @@ function buildRoomSignature(roomData: RoomData | null) {
   });
 }
 
+function isStoredRoomData(value: unknown): value is RoomData {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const room = value as Record<string, unknown>;
+
+  return (
+    typeof room.roomCode === 'string' &&
+    typeof room.status === 'string' &&
+    isTopicPack(room.topicPack) &&
+    isDifficulty(room.difficulty) &&
+    Array.isArray(room.players) &&
+    typeof room.imposterCount === 'number' &&
+    room.gameData !== null &&
+    typeof room.gameData === 'object'
+  );
+}
+
 function activateRoom(roomData: RoomData): RoomData | null {
   const nextSelection = pickWordPair(roomData.topicPack, roomData.difficulty);
 
@@ -785,6 +827,41 @@ export function ImposterGamePanel({
 
     void updateTopicPack(DEFAULT_TOPIC_PACK);
   }, [deviceRole, hasUnlockedPremiumPacks, roomData?.status, roomData?.topicPack]);
+
+  useEffect(() => {
+    if (!hasUnlockedPremiumPacks) {
+      return;
+    }
+
+    const authReturnState = readAuthReturnState();
+
+    if (authReturnState?.kind === 'offline') {
+      setErrorMessage(null);
+      setScreen('offline');
+      return;
+    }
+
+    if (!authReturnState || authReturnState.kind !== 'online-lobby') {
+      return;
+    }
+
+    if (
+      !isDeviceRole(authReturnState.deviceRole) ||
+      !isStoredRoomData(authReturnState.roomData) ||
+      !isLocalPlayer(authReturnState.localPlayer)
+    ) {
+      clearAuthReturnState();
+      return;
+    }
+
+    setDeviceRole(authReturnState.deviceRole);
+    setJoinCode(authReturnState.roomData.roomCode);
+    setLocalPlayer(authReturnState.localPlayer);
+    setErrorMessage(null);
+    commitRoomData(authReturnState.roomData);
+    setScreen('lobby');
+    clearAuthReturnState();
+  }, [hasUnlockedPremiumPacks]);
 
   useEffect(() => {
     if (roomData?.status !== 'voting' || !hasVotingDeadline) {
@@ -1848,6 +1925,15 @@ export function ImposterGamePanel({
   };
 
   const handleLockedPackClick = () => {
+    if (roomData && localPlayer && deviceRole) {
+      saveAuthReturnState({
+        kind: 'online-lobby',
+        deviceRole,
+        roomData,
+        localPlayer,
+      });
+    }
+
     if (onRequestSignIn) {
       onRequestSignIn();
       return;
