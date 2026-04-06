@@ -22,18 +22,11 @@ function normalizeUrl(url: string) {
 }
 
 function getGoogleRedirectUrl() {
-  const configuredUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL;
-
-  if (configuredUrl) {
-    return normalizeUrl(configuredUrl);
-  }
-
   if (typeof window === 'undefined') {
     return '';
   }
 
-  return normalizeUrl(window.location.origin);
+  return `${normalizeUrl(window.location.origin)}auth/callback`;
 }
 
 function readAuthErrorMessageFromUrl() {
