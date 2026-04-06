@@ -10,23 +10,12 @@ import {
 import { SeoContent } from '@/components/seo-content';
 import { supabase } from '@/lib/supabase';
 
-function normalizeUrl(url: string) {
-  if (!url) {
-    return '';
-  }
-
-  const trimmedUrl = url.trim();
-  const prefixedUrl = trimmedUrl.startsWith('http') ? trimmedUrl : `https://${trimmedUrl}`;
-
-  return prefixedUrl.endsWith('/') ? prefixedUrl : `${prefixedUrl}/`;
-}
-
 function getGoogleRedirectUrl() {
   if (typeof window === 'undefined') {
     return '';
   }
 
-  return `${normalizeUrl(window.location.origin)}auth/callback`;
+  return `${window.location.origin}/auth/callback`;
 }
 
 function readAuthErrorMessageFromUrl() {
