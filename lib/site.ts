@@ -1,7 +1,6 @@
 export const SITE_NAME = 'Imposter Game Generator';
 
-// TODO: Replace this placeholder with your real production domain.
-export const SITE_URL = 'https://example.com';
+export const SITE_URL = 'https://www.impostergame-generator.com';
 
 // TODO: Add a real social sharing image at /public/og-image.jpg or update this path.
 export const OG_IMAGE_PATH = '/og-image.jpg';
