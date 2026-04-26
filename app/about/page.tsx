@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'About Us: The Story Behind the Ultimate Imposter Game Online',
   description:
     'Discover why we built the ultimate imposter game online. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 const HOME_ROUTE = '/';

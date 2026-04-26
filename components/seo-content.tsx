@@ -326,9 +326,13 @@ export function SeoContent() {
             <h3 className="mb-4 text-base font-bold text-white">Topics &amp; Features</h3>
             <div className="flex flex-col space-y-2 text-sm text-gray-400">
               {footerColumns.topics.map((link) => (
-                <p key={link.href}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-[#00D17F]"
+                >
                   {link.label}
-                </p>
+                </Link>
               ))}
             </div>
           </div>
@@ -337,9 +341,13 @@ export function SeoContent() {
             <h3 className="mb-4 text-base font-bold text-white">Perfect For</h3>
             <div className="flex flex-col space-y-2 text-sm text-gray-400">
               {footerColumns.perfectFor.map((link) => (
-                <p key={link.href}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-[#00D17F]"
+                >
                   {link.label}
-                </p>
+                </Link>
               ))}
             </div>
           </div>

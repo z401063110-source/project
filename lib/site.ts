@@ -9,6 +9,6 @@ export const OG_IMAGE_PATH = '/og-image.jpg';
 export const HOME_TITLE = 'Free Imposter Game Generator for Mobile Parties';
 
 export const HOME_DESCRIPTION =
-  'Create a room, reveal secret roles, and start fast social deduction rounds on any phone. Play online with friends or offline with one shared device.';
+  'Create a room, reveal secret roles, and start fast social deduction rounds. Play online or offline on any phone. Try free — no app install required.';
 
 export const PUBLIC_SITEMAP_ROUTES = ['/', '/how-to-play', '/rules', '/about'] as const;

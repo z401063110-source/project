@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'How to Play Using the Imposter Game Generator',
   description:
     'Learn how to set up, reveal roles, give clues, discuss, vote, and win with the Imposter Game Generator. A complete guide for new and experienced players.',
+  alternates: {
+    canonical: '/how-to-play',
+  },
 };
 
 const HOME_ROUTE = '/';

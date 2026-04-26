@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Complete Imposter Game Rules: How to Play and Win',
   description:
     'Master the Imposter Game. Learn the official rules, setup phases, voting mechanics, and ultimate strategies for winning this social deduction party game.',
+  alternates: {
+    canonical: '/rules',
+  },
 };
 
 const START_ROUTE = '/imposter-game-generator';
