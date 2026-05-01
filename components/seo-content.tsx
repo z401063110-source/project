@@ -155,40 +155,54 @@ export function SeoContent() {
         <section id="about-us" className={compactAppCardClassName}>
           <SectionHeading title="What Is the Imposter Game Generator?" />
 
-          <div className="mx-auto mt-3 max-w-3xl text-center text-base leading-7 text-slate-300 md:text-lg">
-            <p>
-              The Imposter Game Generator is a free browser-based party tool that handles
-              secret roles, fast setup, and smooth rounds whether your group is playing
-              online or gathered around one shared phone.
-            </p>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {valuePoints.map((point) => (
-              <div
-                key={point.title}
-                className="rounded-3xl border border-white/10 bg-[#161B26] p-5 text-left"
-              >
-                <h3 className="text-lg font-bold text-white">{point.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-gray-400 md:text-base">
-                  {point.description}
+          <div className="mt-6">
+            <div>
+              <div className="mx-auto max-w-3xl text-center text-base leading-7 text-slate-300 md:text-lg">
+                <p>
+                  The Imposter Game Generator is a free browser-based party tool that handles
+                  secret roles, fast setup, and smooth rounds whether your group is playing
+                  online or gathered around one shared phone.
                 </p>
               </div>
-            ))}
-          </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-3xl border border-white/10 bg-[#161B26] p-5 text-center"
-              >
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  {stat.label}
-                </p>
-                <p className="mt-3 text-3xl font-black text-white">{stat.value}</p>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {valuePoints.map((point) => (
+                  <div
+                    key={point.title}
+                    className="rounded-3xl border border-white/10 bg-[#161B26] p-5 text-left"
+                  >
+                    <h3 className="text-lg font-bold text-white">{point.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-gray-400 md:text-base">
+                      {point.description}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="mt-4 grid gap-4 md:grid-cols-3">
+                {stats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-3xl border border-white/10 bg-[#161B26] p-5 text-center"
+                  >
+                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
+                      {stat.label}
+                    </p>
+                    <p className="mt-3 text-3xl font-black text-white">{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <img
+              src="/images/game-role-cards.webp"
+              alt="Secret word, civilian role, imposter role, and discussion cards"
+              className="intro-illustration mx-auto mt-8"
+              width="768"
+              height="512"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </section>
 
@@ -267,6 +281,16 @@ export function SeoContent() {
               </div>
             </div>
           </div>
+
+          <img
+            src="/images/strategy-discussion-scene.webp"
+            alt="Players discussing clues and trying to find the imposter"
+            className="strategy-illustration mt-8"
+            width="836"
+            height="471"
+            loading="lazy"
+            decoding="async"
+          />
         </section>
 
         <section className={appCardClassName}>
@@ -353,7 +377,21 @@ export function SeoContent() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-gray-500 md:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 border-t border-white/10 pt-6">
+          <a
+            href="https://turbo0.com/item/imposter-game-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://img.turbo0.com/badge-listed-light.svg"
+              alt="Listed on Turbo0"
+              style={{ height: 54, width: 'auto' }}
+            />
+          </a>
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-4 pt-4 text-sm text-gray-500 md:flex-row">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start">
             <span>Terms of Service</span>
             <span>Privacy Policy</span>
