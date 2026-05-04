@@ -2,6 +2,7 @@
 
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { LockKeyhole, User as UserIcon, X } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import {
   ImposterGamePanel,
@@ -291,14 +292,13 @@ export function HomePageClient() {
           </div>
 
           {isHeroView && (
-            <img
+            <Image
               src="/images/hero-imposter-party.webp"
               alt="Friends playing an imposter party game on their phones"
               className="hero-illustration mx-auto mt-9"
-              width="836"
-              height="471"
-              decoding="async"
-              fetchPriority="high"
+              width={836}
+              height={471}
+              priority
             />
           )}
         </div>

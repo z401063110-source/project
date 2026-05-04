@@ -8,9 +8,24 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/how-to-play',
   },
+  openGraph: {
+    title: 'How to Play Using the Imposter Game Generator',
+    description:
+      'Learn how to set up, reveal roles, give clues, discuss, vote, and win with the Imposter Game Generator. A complete guide for new and experienced players.',
+    url: '/how-to-play',
+    siteName: 'Imposter Game Generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'How to Play Using the Imposter Game Generator',
+    description:
+      'Learn how to set up, reveal roles, give clues, discuss, vote, and win with the Imposter Game Generator. A complete guide for new and experienced players.',
+  },
 };
 
 const HOME_ROUTE = '/';
+const RULES_ROUTE = '/rules';
 
 type SetupStep = {
   title: string;
@@ -164,8 +179,89 @@ function WarningCard({ title, text }: InfoCardProps) {
   );
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Play Using the Imposter Game Generator',
+  description:
+    'A complete step-by-step guide to setting up, playing, and winning rounds with the Imposter Game Generator.',
+  totalTime: 'PT5M',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Gather Your Group',
+      text: 'Get 4 to 10 players together around a table or online. Make sure one person has their phone or tablet open to the Imposter Game Generator.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Choose Your Game Settings',
+      text: 'Open the lobby menu and pick your category and difficulty level. Easy mode works great for families; Hard mode adds abstract concepts for a deeper challenge.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Set the Player Count',
+      text: 'Use the plus and minus buttons to match the exact number of people in the room. The generator will randomly assign one person as the outsider.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'Start and Reveal',
+      text: 'Press start. Pass the device around so each player taps and holds the screen to reveal their secret identity. When they let go, the word vanishes.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 5,
+      name: 'Take Turns Giving Clues',
+      text: 'Going clockwise, each player says exactly one word or short phrase that relates to their secret word — but cannot be the word itself.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 6,
+      name: 'Discuss and Defend',
+      text: 'After everyone gives a clue, open the floor for discussion. Ask suspicious players to explain their clue choices.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 7,
+      name: 'Vote and Reveal',
+      text: 'Each player votes for the person they believe is the outsider. If caught, the outsider gets one final chance to guess the secret word and steal the win.',
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.impostergame-generator.com',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'How to Play',
+      item: 'https://www.impostergame-generator.com/how-to-play',
+    },
+  ],
+};
+
 export default function HowToPlayPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <main className="relative min-h-screen overflow-hidden bg-[#0B101B] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[#00D17F]/10 blur-[140px]" />
@@ -212,6 +308,14 @@ export default function HowToPlayPage() {
             ))}
           </ol>
         </section>
+
+        <p className="mt-6 text-base leading-8 text-slate-300">
+          Want the quick-reference version? See our{' '}
+          <Link href={RULES_ROUTE} className="font-medium text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]">
+            complete rules overview
+          </Link>{' '}
+          for a condensed breakdown of every phase.
+        </p>
 
         <section aria-labelledby="example-round" className="mt-16">
           <SectionHeading id="example-round" title="Example Round" />
@@ -344,5 +448,6 @@ export default function HowToPlayPage() {
         </section>
       </div>
     </main>
+    </>
   );
 }

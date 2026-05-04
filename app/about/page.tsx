@@ -2,16 +2,31 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About Us: The Story Behind the Ultimate Imposter Game Online',
+  title: 'About Us — Imposter Game Generator',
   description:
-    'Discover why we built the ultimate imposter game online. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+    'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
   alternates: {
     canonical: '/about',
+  },
+  openGraph: {
+    title: 'About Us — Imposter Game Generator',
+    description:
+      'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+    url: '/about',
+    siteName: 'Imposter Game Generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us — Imposter Game Generator',
+    description:
+      'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
   },
 };
 
 const HOME_ROUTE = '/';
 const RULES_ROUTE = '/rules';
+const HOW_TO_PLAY_ROUTE = '/how-to-play';
 
 type StorySection = {
   id: string;
@@ -22,36 +37,36 @@ type StorySection = {
 const proseSectionClass = 'border-l-2 border-[#00D17F]/30 pl-6 md:pl-8';
 
 const introParagraph =
-  'Welcome to the story behind our platform. If you are reading this, you probably understand how hard it is to find a truly reliable imposter game online. The journey to building this platform started with a simple realization: every remote game night needs a seamless way to play an imposter game online without forcing everyone to download heavy apps or create complicated accounts. We wanted to create an experience that stripped away the friction, leaving only the pure, adrenaline-pumping fun of playing an imposter game online.';
+  'Welcome to the story behind our platform. If you are reading this, you probably understand how hard it is to find a truly reliable social deduction game that works right in the browser. The journey to building this platform started with a simple realization: every remote game night needs a seamless way to play without forcing everyone to download heavy apps or create complicated accounts. We wanted to create an experience that stripped away the friction, leaving only the pure, adrenaline-pumping fun of bluffing, deducing, and catching the outsider.';
 
 const storySections: StorySection[] = [
   {
     id: 'the-spark',
-    title: 'The Spark: Redefining the Imposter Game Online',
+    title: 'The Spark',
     paragraphs: [
-      'It all began during a virtual hangout with friends scattered across different time zones. We were sitting in a group video call, desperately looking for something to play together. We needed a fast, web-based imposter game online that everyone could join instantly through a simple browser link. However, the existing options for an imposter game online were either bloated with intrusive ads, required tedious sign-ups, or completely lacked a high-quality vocabulary database. That exact night, the idea for our custom imposter game online was born. We decided to build a dedicated tool that would serve as the ultimate destination to host an imposter game online, designed specifically for seamless real-time syncing.',
+      'It all began during a virtual hangout with friends scattered across different time zones. We were sitting in a group video call, desperately looking for something to play together. We needed a fast, browser-based party game that everyone could join instantly through a simple link. However, the existing options were either bloated with intrusive ads, required tedious sign-ups, or completely lacked a high-quality vocabulary database. That exact night, the idea for the Imposter Game Generator was born. We decided to build a dedicated tool designed specifically for seamless real-time syncing — no downloads, no accounts, just pure fun.',
     ],
   },
   {
     id: 'the-philosophy',
-    title: 'The Philosophy Behind a Great Imposter Game Online',
+    title: 'Our Philosophy',
     paragraphs: [
-      'So, what separates a mediocre website from a truly unforgettable imposter game online? It all comes down to the word pairs and the lack of latency. The heart of any imposter game online is the subtle psychological difference between the majority word and the outsider word. If the words are too similar, your imposter game online ends in endless arguments and frustration. If they are too obviously different, the imposter game online loses all its suspense and ends in five seconds. We have spent countless hours curating, testing, and manually refining our database to ensure every single round of our imposter game online feels perfectly balanced and fair, no matter where your friends are currently located.',
+      'What separates a mediocre party game from an unforgettable one? It all comes down to the word pairs and the lack of latency. The heart of any social deduction round is the subtle psychological difference between the majority word and the outsider word. If the words are too similar, the game ends in endless arguments and frustration. If they are too obviously different, all suspense vanishes in five seconds. We have spent countless hours curating, testing, and manually refining our database to ensure every single round feels perfectly balanced and fair, no matter where your friends are located.',
     ],
   },
   {
     id: 'built-for-remote-players',
-    title: 'Built Specifically for Remote Players',
+    title: 'Built for Remote Players',
     paragraphs: [
-      'We know that hosting an imposter game online needs to be incredibly flexible and universally accessible. You might be playing our imposter game online over a lively Discord call, a professional Zoom meeting, or a casual weekend Google Meet. That is precisely why we built our imposter game online with a sleek, modern dark-mode interface that looks incredible on any desktop, tablet, or mobile device. The sophisticated real-time synchronization under the hood ensures that when you host an imposter game online using our generator, everyone in the room receives their secret identity instantly. Your group can generate a room code, share the link, and jump into a fresh imposter game online in less than ten seconds.',
+      'We know that hosting a group game needs to be incredibly flexible and universally accessible. You might be playing over a lively Discord call, a professional Zoom meeting, or a casual weekend Google Meet. That is precisely why we built the Imposter Game Generator with a sleek, modern dark-mode interface that looks great on any desktop, tablet, or mobile device. The real-time synchronization under the hood ensures that everyone in the room receives their secret identity instantly. Your group can generate a room code, share the link, and jump into a fresh round in less than ten seconds.',
     ],
   },
   {
     id: 'our-mission',
     title: 'Our Mission: Bringing Distant Friends Together',
     paragraphs: [
-      'In a world where we often feel disconnected despite being digital, a genuinely great imposter game online forces us to look at our screens and truly engage with each other. It challenges us to read subtle digital body language, analyze speech patterns over a microphone, and listen closely to our friends. Ultimately, our core mission is extremely simple: we want to provide the absolute best imposter game online available anywhere on the internet today. We want our imposter game online to be the exact reason your distant friends decide to stay in the voice channel an hour later than they originally planned.',
-      'Thank you for choosing our platform for your virtual game nights. Every time you share a room code and start a new session of this imposter game online, you are helping to validate the late nights and hard work we have poured into this indie project. Gather your friends, drop the link in your chat, and get ready to enjoy the absolute chaos of the ultimate imposter game online.',
+      'In a world where we often feel disconnected despite being digital, a genuinely great social deduction game forces us to look at our screens and truly engage with each other. It challenges us to read subtle digital body language, analyze speech patterns over a microphone, and listen closely to our friends. Ultimately, our core mission is simple: we want to provide the best browser-based party game available anywhere on the internet — the kind of experience that makes your distant friends stay in the voice channel an hour later than they originally planned.',
+      'Thank you for choosing our platform for your virtual game nights. Every time you share a room code and start a new session, you are helping to validate the late nights and hard work we have poured into this indie project. Gather your friends, drop the link in your chat, and get ready to enjoy the absolute chaos.',
     ],
   },
 ] as const;
@@ -74,8 +89,45 @@ function StoryCard({ id, title, paragraphs }: StorySection) {
   );
 }
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Imposter Game Generator',
+  url: 'https://www.impostergame-generator.com',
+  description:
+    'A free, browser-based social deduction party game. No app install required — play online or offline on any device.',
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.impostergame-generator.com',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'About',
+      item: 'https://www.impostergame-generator.com/about',
+    },
+  ],
+};
+
 export default function AboutPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <main className="relative min-h-screen overflow-hidden bg-[#0B101B] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[#00D17F]/10 blur-[140px]" />
@@ -93,7 +145,7 @@ export default function AboutPage() {
             id="about-page-title"
             className="mx-auto mb-6 max-w-5xl text-5xl font-extrabold leading-[1.02] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-[#00D17F] md:text-6xl"
           >
-            About Us: The Story Behind the Ultimate Imposter Game Online
+            About Us — The Story Behind Imposter Game Generator
           </h1>
           <p className="mx-auto max-w-3xl text-xl leading-relaxed text-white/70">
             {introParagraph}
@@ -128,6 +180,12 @@ export default function AboutPage() {
               Start a Game
             </Link>
             <Link
+              href={HOW_TO_PLAY_ROUTE}
+              className="inline-flex items-center justify-center rounded-full border border-white/[0.15] bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.08]"
+            >
+              How to Play
+            </Link>
+            <Link
               href={RULES_ROUTE}
               className="inline-flex items-center justify-center rounded-full border border-white/[0.15] bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.08]"
             >
@@ -137,5 +195,6 @@ export default function AboutPage() {
         </section>
       </div>
     </main>
+    </>
   );
 }

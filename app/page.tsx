@@ -97,8 +97,8 @@ const faqSchema = {
 const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: 'How to Play the Imposter Game',
-  description: 'Use this quick guide to get a party round running fast without overexplaining the rules.',
+  name: 'Quick Start: Imposter Game Generator',
+  description: 'Get a party round running in seconds with this quick-start overview.',
   step: [
     {
       '@type': 'HowToStep',
@@ -115,26 +115,14 @@ const howToSchema = {
     {
       '@type': 'HowToStep',
       position: 3,
-      name: 'Set players and roles',
-      text: 'Adjust the imposter count and difficulty level.',
-    },
-    {
-      '@type': 'HowToStep',
-      position: 4,
       name: 'Reveal secret identities',
       text: 'Hold to peek at your hidden word.',
     },
     {
       '@type': 'HowToStep',
-      position: 5,
-      name: 'Discuss and bluff',
-      text: 'Use verbal clues to find the imposter or hide your identity.',
-    },
-    {
-      '@type': 'HowToStep',
-      position: 6,
-      name: 'Vote and resolve the round',
-      text: 'Eliminate a player and check win conditions automatically.',
+      position: 4,
+      name: 'Discuss, bluff, and vote',
+      text: 'Use verbal clues to find the imposter or hide your identity, then vote.',
     },
   ],
 };

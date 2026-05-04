@@ -1,0 +1,21 @@
+{
+  "name": "Imposter Game Generator",
+  "short_name": "Imposter Game",
+  "description": "Free browser-based social deduction party game. No app install required.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B101B",
+  "theme_color": "#00D17F",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

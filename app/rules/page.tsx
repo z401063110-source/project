@@ -8,10 +8,24 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/rules',
   },
+  openGraph: {
+    title: 'Complete Imposter Game Rules: How to Play and Win',
+    description:
+      'Master the Imposter Game. Learn the official rules, setup phases, voting mechanics, and ultimate strategies for winning this social deduction party game.',
+    url: '/rules',
+    siteName: 'Imposter Game Generator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Complete Imposter Game Rules: How to Play and Win',
+    description:
+      'Master the Imposter Game. Learn the official rules, setup phases, voting mechanics, and ultimate strategies for winning this social deduction party game.',
+  },
 };
 
-const START_ROUTE = '/imposter-game-generator';
 const HOME_ROUTE = '/';
+const HOW_TO_PLAY_ROUTE = '/how-to-play';
 
 const quickGuideCards = [
   {
@@ -69,8 +83,83 @@ function SectionHeading({ id, title }: { id: string; title: string }) {
   );
 }
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.impostergame-generator.com',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Rules',
+      item: 'https://www.impostergame-generator.com/rules',
+    },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How many players do you need for the Imposter Game?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The game works best with 4 to 10 players. With fewer than 4, there is not enough variety in clues. With more than 10, consider splitting into two groups and running separate rounds side by side.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What happens if the outsider gets caught?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'If the group votes correctly and catches the outsider, the outsider gets one final chance to guess the secret word. If they guess correctly, they steal the win. If they fail, the group wins the round.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can you say the secret word as your clue?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Each player must give a word or short phrase that relates to the secret word without saying it directly. Saying the word itself is against the rules and makes the round too easy for the outsider.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How does the Imposter Game Generator assign roles?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The generator randomly selects one player as the outsider and gives them a different word. Every other player receives the identical secret word. The assignment is completely random each round.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What difficulty levels are available?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The game offers Easy, Medium, and Hard difficulty. Easy uses familiar, concrete categories like Food or Animals. Hard uses abstract concepts that make bluffing and deduction much more challenging.',
+      },
+    },
+  ],
+};
+
 export default function RulesPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
     <main className="relative min-h-screen overflow-hidden bg-[#0B101B] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[#00D17F]/10 blur-[140px]" />
@@ -107,6 +196,14 @@ export default function RulesPage() {
               </article>
             ))}
           </div>
+
+          <p className="mt-6 text-base leading-8 text-slate-300">
+            For a detailed walkthrough of each phase — from setting player count to the final
+            vote — check our{' '}
+            <Link href={HOW_TO_PLAY_ROUTE} className="font-medium text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]">
+              how to play guide
+            </Link>.
+          </p>
         </section>
 
         <section aria-labelledby="example-round" className="mt-16">
@@ -210,7 +307,7 @@ export default function RulesPage() {
 
           <div className="relative mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
-              href={START_ROUTE}
+              href={HOME_ROUTE}
               className="inline-flex items-center justify-center rounded-full bg-[#00D17F] px-6 py-3.5 text-sm font-bold text-[#04130D] transition-all duration-300 hover:scale-105 hover:bg-[#14E38D]"
             >
               Start a Game
@@ -225,5 +322,6 @@ export default function RulesPage() {
         </section>
       </div>
     </main>
+    </>
   );
 }

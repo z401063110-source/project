@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: HOME_DESCRIPTION,
+  manifest: '/manifest.json',
   openGraph: {
     siteName: SITE_NAME,
     type: 'website',
@@ -44,6 +45,11 @@ export const metadata: Metadata = {
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: '/apple-touch-icon.png',
+  },
+  other: {
+    'theme-color': '#00D17F',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
   },
 };
 

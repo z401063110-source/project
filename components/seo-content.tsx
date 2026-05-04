@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 
 const appCardClassName =
@@ -40,20 +41,12 @@ const guideSteps = [
     description: 'Sync multiple phones or pass one device around.',
   },
   {
-    title: 'Set players and roles',
-    description: 'Adjust the imposter count and difficulty level.',
-  },
-  {
     title: 'Reveal secret identities',
     description: 'Hold to peek at your hidden word.',
   },
   {
-    title: 'Discuss and bluff',
-    description: 'Use verbal clues to find the imposter or hide your identity.',
-  },
-  {
-    title: 'Vote and resolve the round',
-    description: 'Eliminate a player and check win conditions automatically.',
+    title: 'Discuss, bluff, and vote',
+    description: 'Use verbal clues to find the imposter or hide your identity, then vote.',
   },
 ] as const;
 
@@ -190,23 +183,22 @@ export function SeoContent() {
               </div>
             </div>
 
-            <img
+            <Image
               src="/images/game-role-cards.webp"
               alt="Secret word, civilian role, imposter role, and discussion cards"
               className="intro-illustration mx-auto mt-8"
-              width="768"
-              height="512"
+              width={768}
+              height={512}
               loading="lazy"
-              decoding="async"
             />
           </div>
         </section>
 
-        <section id="how-to-play" className={appCardClassName}>
+        <section id="quick-start" className={appCardClassName}>
           <SectionHeading
-            badge="📘 How to Play"
-            title="6-Step Round Guide"
-            subtitle="Use this quick guide to get a party round running fast without overexplaining the rules."
+            badge="📘 Quick Start"
+            title="Get a Round Running in Seconds"
+            subtitle="A quick overview to get started. For the full walkthrough, visit our how to play guide."
           />
 
           <ol className="mt-8 space-y-4">
@@ -227,13 +219,22 @@ export function SeoContent() {
               </li>
             ))}
           </ol>
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/how-to-play"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]"
+            >
+              See the full step-by-step guide
+            </Link>
+          </div>
         </section>
 
-        <section id="game-rules" className={appCardClassName}>
+        <section id="win-conditions" className={appCardClassName}>
           <SectionHeading
-            badge="🏆 Rules & Tips"
-            title="Game Rules, Win Conditions, and Strategy Tips"
-            subtitle="Keep it simple: find the imposter if you are a civilian, and stay hidden if you are not."
+            badge="🏆 Win Conditions"
+            title="How to Win"
+            subtitle="Find the imposter if you are a civilian, and stay hidden if you are not."
           />
 
           <div className="mt-8 space-y-6">
@@ -256,36 +257,24 @@ export function SeoContent() {
                 </div>
               </div>
             </div>
-
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-                Pro Tips for Players
-              </p>
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
-                <div className={mutedPanelClassName}>
-                  <h3 className="text-xl font-bold text-white">If you are not the imposter</h3>
-                  <p className="mt-3 text-base leading-7 text-gray-400">
-                    Give clear clues, listen for weird wording, and compare how confident people sound from round to round.
-                  </p>
-                </div>
-                <div className={[mutedPanelClassName, 'border-[#39FF14]/15'].join(' ')}>
-                  <h3 className="text-xl font-bold text-white">If you are the imposter</h3>
-                  <p className="mt-3 text-base leading-7 text-gray-400">
-                    Keep your clues short, stay close to the topic, and do not panic when the table starts testing you.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <img
+          <div className="mt-6 text-center">
+            <Link
+              href="/rules"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]"
+            >
+              Read the complete rules and strategy tips
+            </Link>
+          </div>
+
+          <Image
             src="/images/strategy-discussion-scene.webp"
             alt="Players discussing clues and trying to find the imposter"
             className="strategy-illustration mt-8"
-            width="836"
-            height="471"
+            width={836}
+            height={471}
             loading="lazy"
-            decoding="async"
           />
         </section>
 
