@@ -377,7 +377,7 @@ export function SeoContent() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-row flex-wrap items-center justify-center gap-4 border-t border-white/10 pt-6">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 border-t border-white/10 pt-6">
           <a
             href="https://turbo0.com/item/imposter-game-generator"
             target="_blank"
@@ -386,29 +386,6 @@ export function SeoContent() {
             <img
               src="https://img.turbo0.com/badge-listed-light.svg"
               alt="Listed on Turbo0"
-              style={{ height: 54, width: 'auto' }}
-            />
-          </a>
-          <a
-            href="https://auraplusplus.com/projects/imposter-game-generator"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              src="https://auraplusplus.com/images/badges/featured-on-light.svg"
-              alt="Featured on Aura++"
-              width="265"
-              height="58"
-            />
-          </a>
-          <a
-            href="https://startupfa.st"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              src="https://verifieddr.com/badge/startupfa-st.svg"
-              alt="Featured on Startup Fast"
               style={{ height: 54, width: 'auto' }}
             />
           </a>
