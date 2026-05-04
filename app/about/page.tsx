@@ -4,14 +4,14 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'About Us — Imposter Game Generator',
   description:
-    'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+    'Why we built the Imposter Game Generator — a free, browser-based social deduction game for remote friends and virtual game nights.',
   alternates: {
     canonical: '/about',
   },
   openGraph: {
     title: 'About Us — Imposter Game Generator',
     description:
-      'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+      'Why we built the Imposter Game Generator — a free, browser-based social deduction game for remote friends and virtual game nights.',
     url: '/about',
     siteName: 'Imposter Game Generator',
     type: 'website',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'About Us — Imposter Game Generator',
     description:
-      'Discover why we built the Imposter Game Generator. A seamless, web-based social deduction experience designed for remote friends, Discord calls, and virtual game nights.',
+      'Why we built the Imposter Game Generator — a free, browser-based social deduction game for remote friends and virtual game nights.',
   },
 };
 

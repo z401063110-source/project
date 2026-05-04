@@ -354,7 +354,7 @@ export function SeoContent() {
           <a
             href="https://turbo0.com/item/imposter-game-generator"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="nofollow noopener noreferrer"
           >
             <img
               src="https://img.turbo0.com/badge-listed-light.svg"
