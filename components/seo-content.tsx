@@ -401,6 +401,17 @@ export function SeoContent() {
               height="58"
             />
           </a>
+          <a
+            href="https://startupfa.st"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="https://verifieddr.com/badge/startupfa-st.svg"
+              alt="Featured on Startup Fast"
+              style={{ height: 54, width: 'auto' }}
+            />
+          </a>
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 pt-4 text-sm text-gray-500 md:flex-row">
