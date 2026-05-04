@@ -3,7 +3,6 @@ export const SITE_NAME = 'Imposter Game Generator';
 export const baseUrl = 'https://www.impostergame-generator.com';
 export const SITE_URL = baseUrl;
 
-// TODO: Add a real social sharing image at /public/og-image.jpg or update this path.
 export const OG_IMAGE_PATH = '/og-image.jpg';
 
 export const HOME_TITLE = 'Free Imposter Game Generator for Mobile Parties';

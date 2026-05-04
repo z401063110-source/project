@@ -258,35 +258,49 @@ export function HomePageClient() {
         <div
           className={
             isHeroView
-              ? 'flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center px-4 pb-8 text-center sm:px-6 lg:min-h-screen lg:px-4 lg:py-8'
+              ? 'flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center px-4 pb-8 pt-4 text-center sm:px-6 lg:min-h-screen lg:px-4 lg:py-8'
               : ''
           }
         >
-          {isHeroView && (
-            <>
-              <h1 className="text-5xl font-bold leading-tight text-white sm:text-6xl">
-                <span>
-                  Free <span className="text-[#00D17F]">Imposter Game Generator</span>
-                </span>
-                <span className="block">for Mobile Parties</span>
-              </h1>
+          <div className={isHeroView ? 'flex w-full flex-col items-center' : ''}>
+            {isHeroView && (
+              <>
+                <h1 className="text-5xl font-bold leading-tight text-white sm:text-6xl">
+                  <span>
+                    Free <span className="text-[#00D17F]">Imposter Game Generator</span>
+                  </span>{' '}
+                  <span className="block">for Mobile Parties</span>
+                </h1>
 
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-                Create a room, reveal secret roles, and start fast social deduction rounds
-                on any phone. Play online with friends or offline with one shared device.
-              </p>
-            </>
-          )}
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+                  Create a room, reveal secret roles, and start fast social deduction rounds
+                  on any phone. Play online with friends or offline with one shared device.
+                </p>
+              </>
+            )}
 
-          <div className={isHeroView ? 'mt-9 w-full max-w-[480px]' : ''}>
-            <ImposterGamePanel
-              entryLayout="embedded"
-              isLoginModalOpen={isLoginModalOpen}
-              onScreenChange={setCurrentScreen}
-              onRequestSignIn={openLoginModal}
-              user={user}
-            />
+            <div className={isHeroView ? 'mt-9 w-full max-w-[480px]' : ''}>
+              <ImposterGamePanel
+                entryLayout="embedded"
+                isLoginModalOpen={isLoginModalOpen}
+                onScreenChange={setCurrentScreen}
+                onRequestSignIn={openLoginModal}
+                user={user}
+              />
+            </div>
           </div>
+
+          {isHeroView && (
+            <img
+              src="/images/hero-imposter-party.webp"
+              alt="Friends playing an imposter party game on their phones"
+              className="hero-illustration mx-auto mt-9"
+              width="836"
+              height="471"
+              decoding="async"
+              fetchPriority="high"
+            />
+          )}
         </div>
       </section>
 

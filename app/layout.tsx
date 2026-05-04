@@ -38,6 +38,13 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [OG_IMAGE_PATH],
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({

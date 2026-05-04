@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="screenGlow" x1="20" y1="22" x2="45" y2="43" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#39FF14"/>
+      <stop offset="1" stop-color="#00D17F"/>
+    </linearGradient>
+    <linearGradient id="phoneFill" x1="18" y1="9" x2="48" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00D17F" flood-opacity=".7"/>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#F8FAFC"/>
+  <rect x="14" y="9" width="36" height="46" rx="10" fill="url(#phoneFill)"/>
+  <rect x="18.5" y="13.5" width="27" height="37" rx="6.5" stroke="#F8FAFC" stroke-width="3"/>
+  <path d="M27 17H37" stroke="#F8FAFC" stroke-width="3" stroke-linecap="round"/>
+  <rect x="23" y="27" width="18" height="10" rx="3" fill="url(#screenGlow)" filter="url(#glow)"/>
+  <path d="M32 24.5V39.5" stroke="#020617" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M24.5 32H39.5" stroke="#020617" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="32" cy="45" r="2" fill="#00D17F"/>
+</svg>
