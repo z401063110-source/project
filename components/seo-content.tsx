@@ -96,16 +96,12 @@ const footerColumns = {
     { href: '/rules', label: 'Rules' },
     { href: '/about', label: 'About' },
   ],
-  topics: [
-    { href: '/best-imposter-game-topics', label: 'Best Imposter Game Topics' },
-    { href: '/imposter-game-theme-packs', label: 'Fun Theme Packs' },
-    { href: '/difficulty', label: 'Customizable Difficulty' },
-  ],
+  topics: ['Best Imposter Game Topics', 'Fun Theme Packs', 'Customizable Difficulty'],
   perfectFor: [
-    { href: '/face-to-face-parties', label: 'Face-to-Face Parties' },
-    { href: '/imposter-game-for-team-building', label: 'Team Building' },
-    { href: '/ice-breakers', label: 'Ice Breakers' },
-    { href: '/family-gatherings', label: 'Family Gatherings' },
+    'Face-to-Face Parties',
+    'Team Building',
+    'Ice Breakers',
+    'Family Gatherings',
   ],
 } as const;
 
@@ -349,14 +345,8 @@ export function SeoContent() {
           <div>
             <h3 className="mb-4 text-base font-bold text-white">Topics &amp; Features</h3>
             <div className="flex flex-col space-y-2 text-sm text-gray-400">
-              {footerColumns.topics.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="transition-colors hover:text-[#00D17F]"
-                >
-                  {link.label}
-                </Link>
+              {footerColumns.topics.map((label) => (
+                <span key={label}>{label}</span>
               ))}
             </div>
           </div>
@@ -364,14 +354,8 @@ export function SeoContent() {
           <div>
             <h3 className="mb-4 text-base font-bold text-white">Perfect For</h3>
             <div className="flex flex-col space-y-2 text-sm text-gray-400">
-              {footerColumns.perfectFor.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="transition-colors hover:text-[#00D17F]"
-                >
-                  {link.label}
-                </Link>
+              {footerColumns.perfectFor.map((label) => (
+                <span key={label}>{label}</span>
               ))}
             </div>
           </div>
