@@ -1,6 +1,6 @@
 export const SITE_NAME = 'Imposter Game Generator';
 
-export const baseUrl = 'https://www.impostergame-generator.com';
+export const baseUrl = 'https://impostergame-generator.com';
 export const SITE_URL = baseUrl;
 
 export const OG_IMAGE_PATH = '/og-image.jpg';
