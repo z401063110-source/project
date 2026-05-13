@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/auth/', '/imposter-game-generator'],
+        disallow: ['/api/', '/auth/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -25,6 +25,27 @@ const valuePoints = [
   },
 ] as const;
 
+const modeComparison = [
+  {
+    mode: 'Online Room',
+    bestFor: 'Friends on separate phones or remote groups on a call',
+    playersNeed: 'Each player uses their own browser',
+    start: 'Host creates a room and shares the code',
+  },
+  {
+    mode: 'Join by Code',
+    bestFor: 'Guests who need the fastest way into an existing game',
+    playersNeed: 'A phone, tablet, or desktop browser',
+    start: 'Player enters the 4-digit room code',
+  },
+  {
+    mode: 'Pass & Play Offline',
+    bestFor: 'In-person groups, travel, classrooms, and low-signal rooms',
+    playersNeed: 'One shared phone for the whole table',
+    start: 'Host starts offline mode and passes the device around',
+  },
+] as const;
+
 const stats = [
   { label: 'Players', value: '4-10' },
   { label: 'Duration', value: '15-30 mins' },
@@ -47,6 +68,24 @@ const guideSteps = [
   {
     title: 'Discuss, bluff, and vote',
     description: 'Use verbal clues to find the imposter or hide your identity, then vote.',
+  },
+] as const;
+
+const winTips = [
+  {
+    title: 'Civilian clue strategy',
+    description:
+      'Give a clue that proves you know the word without making the word obvious to the imposter.',
+  },
+  {
+    title: 'Imposter bluff strategy',
+    description:
+      'Listen for the safest category, mirror the group tone, and avoid overexplaining your clue.',
+  },
+  {
+    title: 'Voting strategy',
+    description:
+      'Ask players to explain vague clues before voting. A rushed vote often helps the imposter.',
   },
 ] as const;
 
@@ -87,9 +126,15 @@ const footerColumns = {
   resources: [
     { href: '/how-to-play', label: 'How to Play' },
     { href: '/rules', label: 'Rules' },
+    { href: '/imposter-game-words', label: 'Word Ideas' },
+    { href: '/imposter-game-topics', label: 'Topic Packs' },
     { href: '/about', label: 'About' },
   ],
-  topics: ['Best Imposter Game Topics', 'Fun Theme Packs', 'Customizable Difficulty'],
+  topics: [
+    { href: '/imposter-game-topics', label: 'Best Imposter Game Topics' },
+    { href: '/imposter-game-topics', label: 'Fun Theme Packs' },
+    { href: '/imposter-game-words', label: 'Word Pair Ideas' },
+  ],
   perfectFor: [
     'Face-to-Face Parties',
     'Team Building',
@@ -146,6 +191,18 @@ export function SeoContent() {
 
           <div className="mt-6">
             <div>
+              <div className="mx-auto max-w-3xl rounded-3xl border border-[#00D17F]/20 bg-[#00D17F]/[0.06] p-5 text-left">
+                <h3 className="text-base font-bold text-[#00D17F]">
+                  Quick Answer: What is an imposter game generator?
+                </h3>
+                <p className="mt-3 text-base leading-7 text-slate-200 md:text-lg">
+                  An imposter game generator is a browser tool that assigns hidden roles,
+                  gives most players the same secret word, gives the imposter a different
+                  word, and helps the group run clue, discussion, and voting rounds without
+                  cards, paper, signup, or app installs.
+                </p>
+              </div>
+
               <div className="mx-auto max-w-3xl text-center text-base leading-7 text-slate-300 md:text-lg">
                 <p>
                   The Imposter Game Generator is a free browser-based party tool that handles
@@ -180,6 +237,50 @@ export function SeoContent() {
                     <p className="mt-3 text-3xl font-black text-white">{stat.value}</p>
                   </div>
                 ))}
+              </div>
+
+              <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-[#161B26]">
+                <div className="border-b border-white/10 px-5 py-4">
+                  <h3 className="text-xl font-bold text-white">
+                    Online Room vs Join by Code vs Pass &amp; Play Offline
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">
+                    Choose the mode based on where your players are and how many devices
+                    your group wants to use.
+                  </p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[720px] text-left text-sm">
+                    <thead className="bg-white/[0.04] text-xs uppercase text-slate-400">
+                      <tr>
+                        <th scope="col" className="px-5 py-3 font-semibold">
+                          Mode
+                        </th>
+                        <th scope="col" className="px-5 py-3 font-semibold">
+                          Best for
+                        </th>
+                        <th scope="col" className="px-5 py-3 font-semibold">
+                          Players need
+                        </th>
+                        <th scope="col" className="px-5 py-3 font-semibold">
+                          How it starts
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10 text-slate-300">
+                      {modeComparison.map((mode) => (
+                        <tr key={mode.mode}>
+                          <th scope="row" className="px-5 py-4 font-bold text-white">
+                            {mode.mode}
+                          </th>
+                          <td className="px-5 py-4 leading-6">{mode.bestFor}</td>
+                          <td className="px-5 py-4 leading-6">{mode.playersNeed}</td>
+                          <td className="px-5 py-4 leading-6">{mode.start}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
@@ -257,6 +358,17 @@ export function SeoContent() {
                 </div>
               </div>
             </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {winTips.map((tip) => (
+                <div key={tip.title} className={mutedPanelClassName}>
+                  <h3 className="text-lg font-bold text-white">{tip.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-400 md:text-base">
+                    {tip.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="mt-6 text-center">
@@ -268,14 +380,6 @@ export function SeoContent() {
             </Link>
           </div>
 
-          <Image
-            src="/images/strategy-discussion-scene.webp"
-            alt="Players discussing clues and trying to find the imposter"
-            className="strategy-illustration mt-8"
-            width={836}
-            height={471}
-            loading="lazy"
-          />
         </section>
 
         <section className={appCardClassName}>
@@ -334,8 +438,14 @@ export function SeoContent() {
           <div>
             <h3 className="mb-4 text-base font-bold text-white">Topics &amp; Features</h3>
             <div className="flex flex-col space-y-2 text-sm text-gray-400">
-              {footerColumns.topics.map((label) => (
-                <span key={label}>{label}</span>
+              {footerColumns.topics.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="transition-colors hover:text-[#00D17F]"
+                >
+                  {link.label}
+                </Link>
               ))}
             </div>
           </div>

@@ -26,6 +26,8 @@ export const metadata: Metadata = {
 
 const HOME_ROUTE = '/';
 const RULES_ROUTE = '/rules';
+const WORDS_ROUTE = '/imposter-game-words';
+const TOPICS_ROUTE = '/imposter-game-topics';
 
 type SetupStep = {
   title: string;
@@ -314,7 +316,15 @@ export default function HowToPlayPage() {
           <Link href={RULES_ROUTE} className="font-medium text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]">
             complete rules overview
           </Link>{' '}
-          for a condensed breakdown of every phase.
+          for a condensed breakdown of every phase. You can also browse{' '}
+          <Link href={WORDS_ROUTE} className="font-medium text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]">
+            imposter game word ideas
+          </Link>{' '}
+          and{' '}
+          <Link href={TOPICS_ROUTE} className="font-medium text-[#00D17F] underline underline-offset-4 transition-colors hover:text-[#14E38D]">
+            topic packs
+          </Link>{' '}
+          before choosing your settings.
         </p>
 
         <section aria-labelledby="example-round" className="mt-16">
@@ -443,6 +453,18 @@ export default function HowToPlayPage() {
               className="inline-flex items-center justify-center rounded-full border border-white/[0.15] bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.08]"
             >
               Back to Home
+            </Link>
+            <Link
+              href={WORDS_ROUTE}
+              className="inline-flex items-center justify-center rounded-full border border-white/[0.15] bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.08]"
+            >
+              Word Ideas
+            </Link>
+            <Link
+              href={TOPICS_ROUTE}
+              className="inline-flex items-center justify-center rounded-full border border-white/[0.15] bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.08]"
+            >
+              Topic Packs
             </Link>
           </div>
         </section>

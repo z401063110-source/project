@@ -288,6 +288,9 @@ export function HomePageClient() {
                 onRequestSignIn={openLoginModal}
                 user={user}
               />
+              <p className="mt-4 text-sm font-semibold text-slate-300">
+                No app install · No signup required · Works on any phone
+              </p>
             </div>
           </div>
 

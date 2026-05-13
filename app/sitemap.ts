@@ -5,6 +5,8 @@ const routeConfig: Record<string, { priority: number; changeFrequency: 'weekly' 
   '/': { priority: 1.0, changeFrequency: 'weekly' },
   '/how-to-play': { priority: 0.8, changeFrequency: 'monthly' },
   '/rules': { priority: 0.8, changeFrequency: 'monthly' },
+  '/imposter-game-words': { priority: 0.7, changeFrequency: 'monthly' },
+  '/imposter-game-topics': { priority: 0.7, changeFrequency: 'monthly' },
   '/about': { priority: 0.5, changeFrequency: 'monthly' },
 };
 

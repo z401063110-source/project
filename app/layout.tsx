@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: HOME_DESCRIPTION,
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
   openGraph: {
     siteName: SITE_NAME,
     type: 'website',
@@ -43,6 +43,7 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicon.ico' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '180x180' },
     ],
     apple: '/apple-touch-icon.png',
   },
